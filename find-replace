@@ -69,13 +69,14 @@ def visit_file(entry):
 
     first = True
 
-    while candidate_index < len(candidate_list):
+    while candidate_index < len(candidate_list) and not do_quit:
         candidate = candidate_list[candidate_index]
         candidate_index += 1
 
         if do_all:
             candidate.apply = True
             continue
+
         if do_none:
             candidate.apply = False
             continue
@@ -171,7 +172,6 @@ def visit_file(entry):
                 candidate.apply = False
             elif c == 'q':
                 do_quit = True
-                candidate_index = len(candidate_list)
             elif c == 'a':
                 do_all = True
                 candidate.apply = True
