@@ -40,11 +40,11 @@ def visit(path):
         elif entry.is_file():
             files.append(entry)
 
-    for entry in directories:
-        visit(entry.path)
-
     for entry in files:
         visit_file(entry)
+
+    for entry in directories:
+        visit(entry.path)
 
 class Candidate:
     __slots__ = ('match', 'apply')
