@@ -26,6 +26,21 @@ except IndexError:
 
 RE = re.compile(PATTERN)
 
+class Candidate:
+    __slots__ = ('match', 'apply')
+
+    def __init__(self, match):
+        self.match = match
+        self.apply = None
+
+def read_character(file=sys.stdin) -> str:
+    old = termios.tcgetattr(file)
+    try:
+        tty.setcbreak(file)
+        return file.read(1)
+    finally:
+        termios.tcsetattr(file, termios.TCSADRAIN, old)
+
 def visit(path):
     directories = []
     files = []
@@ -45,13 +60,6 @@ def visit(path):
 
     for entry in directories:
         visit(entry.path)
-
-class Candidate:
-    __slots__ = ('match', 'apply')
-
-    def __init__(self, match):
-        self.match = match
-        self.apply = None
 
 def visit_file(entry):
     with open(entry.path) as file:
@@ -236,14 +244,6 @@ def visit_file(entry):
 
     if do_quit:
         sys.exit(0)
-
-def read_character(file=sys.stdin):
-    old = termios.tcgetattr(file)
-    try:
-        tty.setcbreak(file)
-        return file.read(1)
-    finally:
-        termios.tcsetattr(file, termios.TCSADRAIN, old)
 
 if __name__ == '__main__':
     try:
