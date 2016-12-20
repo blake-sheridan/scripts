@@ -6,6 +6,7 @@ import sys
 import termios
 import tty
 
+IGNORE_DIRECTORIES = frozenset(('__pycache__',))
 IGNORE_DOT_FILES = True
 INDENTATION = b''
 LINES_AFTER = 2
@@ -34,9 +35,8 @@ def visit(path):
             continue
 
         if entry.is_dir():
-            if entry.name in {'__pycache__'}:
-                continue
-            directories.append(entry)
+            if entry.name not in IGNORE_DIRECTORIES:
+                directories.append(entry)
         elif entry.is_file():
             files.append(entry)
 
