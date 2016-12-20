@@ -6,8 +6,9 @@ hostname="$1"
 
 ssh $hostname "mkdir -p .config"
 
-scp -r $HOME/.config/ack $hostname:.config/
-scp -r $HOME/.config/git $hostname:.config/
+scp -r $HOME/.config/ack   $hostname:.config/
+scp -r $HOME/.config/emacs $hostname:.config/
+scp -r $HOME/.config/git   $hostname:.config/
 
 scp $HOME/.emacs    $hostname:
 scp $HOME/.profile  $hostname:
