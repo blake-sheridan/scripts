@@ -55,7 +55,10 @@ class Candidate:
 
 def visit_file(entry):
     with open(entry.path) as file:
-        text = file.read()
+        try:
+            text = file.read()
+        except UnicodeDecodeError:
+            return # Not a text file
 
     buffer = sys.stdout.buffer
 
