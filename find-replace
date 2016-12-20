@@ -247,6 +247,9 @@ def visit_file(path: str):
 
 if __name__ == '__main__':
     try:
-        visit_directory(PATH)
+        try:
+            visit_directory(PATH)
+        except NotADirectoryError:
+            visit_file(PATH)
     except KeyboardInterrupt:
         pass
