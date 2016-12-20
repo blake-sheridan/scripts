@@ -41,7 +41,7 @@ def read_character(file=sys.stdin) -> str:
     finally:
         termios.tcsetattr(file, termios.TCSADRAIN, old)
 
-def visit(path):
+def visit_directory(path: str):
     directories = []
     files = []
 
@@ -56,13 +56,13 @@ def visit(path):
             files.append(entry)
 
     for entry in files:
-        visit_file(entry)
+        visit_file(entry.path)
 
     for entry in directories:
-        visit(entry.path)
+        visit_directory(entry.path)
 
-def visit_file(entry):
-    with open(entry.path) as file:
+def visit_file(path: str):
+    with open(path) as file:
         try:
             text = file.read()
         except UnicodeDecodeError:
@@ -95,7 +95,7 @@ def visit_file(entry):
         if first:
             first = False
             buffer.write(b'\x1B[1m')
-            buffer.write(entry.path.encode())
+            buffer.write(path.encode())
             buffer.write(b'\x1B[0m')
             buffer.write(b'\n')
             buffer.flush()
@@ -231,7 +231,7 @@ def visit_file(entry):
             buffer.flush()
 
     if any(candidate.apply for candidate in candidate_list):
-        with open(entry.path, 'w') as file:
+        with open(path, 'w') as file:
             index = 0
 
             for candidate in candidate_list:
@@ -247,6 +247,6 @@ def visit_file(entry):
 
 if __name__ == '__main__':
     try:
-        visit(PATH)
+        visit_directory(PATH)
     except KeyboardInterrupt:
         pass
