@@ -51,7 +51,7 @@ class Candidate:
 
     def __init__(self, match):
         self.match = match
-        self.apply = False
+        self.apply = None
 
 def visit_file(entry):
     with open(entry.path) as file:
@@ -164,7 +164,7 @@ def visit_file(entry):
 
         c = None
         while c is None:
-            c = read_character().lower()
+            c = read_character()
 
             if c == 'y':
                 candidate.apply = True
@@ -177,6 +177,16 @@ def visit_file(entry):
                 candidate.apply = True
             elif c == 'd':
                 do_none = True
+            elif c == 'g':
+                raise NotImplementedError
+            elif c == 'j':
+                raise NotImplementedError
+            elif c == 'J':
+                raise NotImplementedError
+            elif c == 'k':
+                raise NotImplementedError
+            elif c == 'K':
+                raise NotImplementedError
             elif c == '?':
                 do_help = True
             else:
@@ -198,6 +208,11 @@ def visit_file(entry):
             print('q - quit; do not replace this match or any of the remaining ones')
             print('a - replace this match and all later matches in the file')
             print('d - do not replace this match or any of the later matches in the file')
+            print('g - select a match to go to')
+            print('j - leave this match undecided, see next undecided match')
+            print('J - leave this match undecided, see next match')
+            print('k - leave this match undecided, see previous undecided match')
+            print('K - leave this match undecided, see previous match')
             print('? - print help')
 
             buffer.write(b'\x1B[0m')
