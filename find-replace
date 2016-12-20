@@ -201,20 +201,17 @@ def visit_file(entry):
             candidate_index -= 1
 
             buffer.write(b'\x1B[1;31m')
-            buffer.flush()
-
-            print('y - replace this match')
-            print('n - do not replace this match')
-            print('q - quit; do not replace this match or any of the remaining ones')
-            print('a - replace this match and all later matches in the file')
-            print('d - do not replace this match or any of the later matches in the file')
-            print('g - select a match to go to')
-            print('j - leave this match undecided, see next undecided match')
-            print('J - leave this match undecided, see next match')
-            print('k - leave this match undecided, see previous undecided match')
-            print('K - leave this match undecided, see previous match')
-            print('? - print help')
-
+            buffer.write(b'y - replace this match')
+            buffer.write(b'n - do not replace this match')
+            buffer.write(b'q - quit; do not replace this match or any of the remaining ones')
+            buffer.write(b'a - replace this match and all later matches in the file')
+            buffer.write(b'd - do not replace this match or any of the later matches in the file')
+            buffer.write(b'g - select a match to go to')
+            buffer.write(b'j - leave this match undecided, see next undecided match')
+            buffer.write(b'J - leave this match undecided, see next match')
+            buffer.write(b'k - leave this match undecided, see previous undecided match')
+            buffer.write(b'K - leave this match undecided, see previous match')
+            buffer.write(b'? - print help')
             buffer.write(b'\x1B[0m')
             buffer.flush()
 
