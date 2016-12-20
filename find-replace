@@ -128,7 +128,7 @@ def visit_file(path: str):
         try:
             line_end = text.index('\n', end)
         except ValueError:
-            raise NotImplementedError
+            line_end = len(text)
         else:
             context_line_start = line_end + 1
 
