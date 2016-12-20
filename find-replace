@@ -7,7 +7,7 @@ import termios
 import tty
 
 IGNORE_DOT_FILES = True
-INDENTATION = b' '
+INDENTATION = b''
 LINES_AFTER = 3
 LINES_BEFORE = 3
 
