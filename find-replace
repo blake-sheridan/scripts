@@ -164,7 +164,11 @@ def visit_file(entry):
 
         c = None
         while c is None:
-            c = read_character()
+            try:
+                c = read_character()
+            except KeyboardInterrupt:
+                buffer.write(b'\n')
+                raise
 
             if c == 'y':
                 candidate.apply = True
@@ -239,4 +243,7 @@ def read_character(file=sys.stdin):
         termios.tcsetattr(file, termios.TCSADRAIN, old)
 
 if __name__ == '__main__':
-    visit(PATH)
+    try:
+        visit(PATH)
+    except KeyboardInterrupt:
+        pass
