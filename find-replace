@@ -100,8 +100,7 @@ def visit_file(path: str):
             buffer.write(b'\n')
             buffer.flush()
 
-        start = candidate.match.start()
-        end = candidate.match.end()
+        (start, end) = candidate.match.span()
 
         lines_before = []
         lines_after = []
