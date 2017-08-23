@@ -11,7 +11,7 @@ HEIGHT = 1080
 def main():
     try:
         (_, command, name) = sys.argv
-    except IndexError:
+    except ValueError:
         print('Usage:', sys.argv[0], '(select|focus)', '<name>')
         return
 
