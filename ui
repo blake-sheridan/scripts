@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import sys
+
+# TODO: infer
+WIDTH = 1920 * 2
+HEIGHT = 1080
+
+def main():
+    try:
+        (_, command, name) = sys.argv
+    except IndexError:
+        print('Usage:', sys.argv[0], '(select|focus)', '<name>')
+        return
+
+    if command == 'select':
+        do_select(name)
+    elif command == 'focus':
+        do_focus(name)
+    else:
+        raise NotImplementedError
+
+def do_select(name: str):
+    result = subprocess.run(['xdotool', 'selectwindow'], stdout=subprocess.PIPE)
+    window_id = int(result.stdout.decode())
+
+    path = get_path(name)
+
+    try:
+        file = open(path, 'w')
+    except FileNotFoundError:
+        os.makedirs(os.path.dirname(path))
+        file = open(path, 'w')
+
+    with file:
+        file.write(str(window_id))
+
+def do_focus(name: str):
+    path = get_path(name)
+
+    with open(path) as file:
+        window_id = int(file.read())
+
+    subprocess.run(['xdotool', 'windowactivate', str(window_id)])
+
+def get_path(name: str) -> str:
+    result = subprocess.run(['xprop', '-root', '-notype', '_NET_DESKTOP_VIEWPORT'], stdout=subprocess.PIPE)
+
+    # _NET_DESKTOP_VIEWPORT = 0, 1080
+    (_, x_bytes, y_bytes) = result.stdout.rsplit(b' ', 2)
+    x_bytes = x_bytes[:-1] # comma
+
+    x_pixels = int(x_bytes.decode())
+    y_pixels = int(y_bytes.decode())
+
+    (x, _) = divmod(x_pixels, WIDTH)
+    (y, _) = divmod(y_pixels, HEIGHT)
+
+    return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{x}-{y}.id')
+
+if __name__ == '__main__':
+    main()
