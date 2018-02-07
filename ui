@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import subprocess
 import sys
-
-# TODO: infer
-WIDTH = 1920 * 2
-HEIGHT = 1080
 
 def main():
     try:
@@ -45,6 +42,12 @@ def do_focus(name: str):
 
     subprocess.run(['xdotool', 'windowactivate', str(window_id)])
 
+def get_desktop_size() -> tuple:
+    result = subprocess.run(['xdpyinfo'], stdout=subprocess.PIPE)
+    match = re.search(b'dimensions:\s+([0-9]+)x([0-9]+)', result.stdout)
+    (width_bytes, height_bytes) = match.groups()
+    return (int(width_bytes), int(height_bytes))
+
 def get_path(name: str) -> str:
     result = subprocess.run(['xprop', '-root', '-notype', '_NET_DESKTOP_VIEWPORT'], stdout=subprocess.PIPE)
 
@@ -55,8 +58,10 @@ def get_path(name: str) -> str:
     x_pixels = int(x_bytes.decode())
     y_pixels = int(y_bytes.decode())
 
-    (x, _) = divmod(x_pixels, WIDTH)
-    (y, _) = divmod(y_pixels, HEIGHT)
+    (width, height) = get_desktop_size()
+
+    (x, _) = divmod(x_pixels, width)
+    (y, _) = divmod(y_pixels, height)
 
     return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{x}-{y}.id')
 
