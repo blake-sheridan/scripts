@@ -65,8 +65,8 @@ def get_path(name: str) -> str:
 
     (width, height) = get_desktop_size()
 
-    (x, _) = divmod(x_pixels, width)
-    (y, _) = divmod(y_pixels, height)
+    x = x_pixels // width
+    y = y_pixels // height
 
     return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{x}-{y}.id')
 
