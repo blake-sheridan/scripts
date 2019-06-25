@@ -64,12 +64,13 @@ def visit_directory(path: str):
     for entry in directories:
         visit_directory(entry.path)
 
+
 def visit_file(path: str):
     with open(path) as file:
         try:
             text = file.read()
         except UnicodeDecodeError:
-            return # Not a text file
+            return  # Not a text file
 
     buffer = sys.stdout.buffer
 
@@ -115,7 +116,7 @@ def visit_file(path: str):
         else:
             context_line_end = line_start - 1
 
-            for i in range(LINES_BEFORE):
+            for _ in range(LINES_BEFORE):
                 try:
                     context_line_start = text.rindex('\n', 0, context_line_end) + 1
                 except ValueError:
