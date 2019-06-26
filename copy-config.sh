@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -eu
-
 hostname="$1"
 
 ssh $hostname "mkdir -p .config"
