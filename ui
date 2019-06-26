@@ -24,15 +24,7 @@ def do_select(name: str):
     result = subprocess.run(['xdotool', 'selectwindow'], stdout=subprocess.PIPE)
     window_id = int(result.stdout.decode())
 
-    path = get_path(name)
-
-    try:
-        file = open(path, 'w')
-    except FileNotFoundError:
-        os.makedirs(os.path.dirname(path))
-        file = open(path, 'w')
-
-    with file:
+    with open(get_path(name), 'w') as file:
         file.write(str(window_id))
 
 
@@ -47,7 +39,7 @@ def do_focus(name: str):
 
 def get_path(name: str) -> str:
     display = os.environ['DISPLAY']
-    return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{display}.id')
+    return os.path.join(os.environ['XDG_RUNTIME_DIR'], f'ui-{name}-{display}.id')
 
 
 if __name__ == '__main__':
