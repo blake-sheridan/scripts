@@ -14,34 +14,42 @@ def main():
         print('Usage:', sys.argv[0], '(select|focus)', '<name>')
         return
 
+    display = Display()
+
     if command == 'select':
-        do_select(name)
+        display.do_select(name)
     elif command == 'focus':
-        do_focus(name)
+        display.do_focus(name)
     else:
         raise NotImplementedError
 
 
-def do_select(name: str):
-    result = subprocess.run(['xdotool', 'selectwindow'], stdout=subprocess.PIPE)
-    window_id = int(result.stdout.decode())
+class Display:
+    """An object containing information about an X display."""
 
-    with open(get_path(name), 'w') as file:
-        file.write(str(window_id))
+    def __init__(self):
+        """Default constructor — use the current display."""
+        self._display = os.environ['DISPLAY']
 
+    # Commands
 
-def do_focus(name: str):
-    path = get_path(name)
+    def do_select(self, key: str) -> None:
+        result = subprocess.run(['xdotool', 'selectwindow'], stdout=subprocess.PIPE)
+        window_id = int(result.stdout.decode())
 
-    with open(path) as file:
-        window_id = int(file.read())
+        with open(self._get_path(key), 'wb') as file:
+            file.write(b'%d' % window_id)
 
-    subprocess.run(['xdotool', 'windowactivate', str(window_id)])
+    def do_focus(self, key: str) -> None:
+        with open(self._get_path(key), 'rb') as file:
+            window_id = int(file.read())
 
+        subprocess.run(['xdotool', 'windowactivate', str(window_id)])
 
-def get_path(name: str) -> str:
-    display = os.environ['DISPLAY']
-    return os.path.join(os.environ['XDG_RUNTIME_DIR'], f'ui-{name}-{display}.id')
+    # Helpers
+
+    def _get_path(self, key: str) -> str:
+        return os.path.join(os.environ['XDG_RUNTIME_DIR'], f'ui-{self._display}-{key}.id')
 
 
 if __name__ == '__main__':
