@@ -46,14 +46,8 @@ def do_focus(name: str):
 
 
 def get_path(name: str) -> str:
-    result = subprocess.run(['xprop', '-root', '-notype', '_NET_CURRENT_DESKTOP'], stdout=subprocess.PIPE)
-
-    # _NET_CURRENT_DESKTOP = 1
-    (_, desktop_bytes) = result.stdout.rsplit(b' ', 1)
-
-    desktop = int(desktop_bytes.decode())
-
-    return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{desktop}.id')
+    display = os.environ['DISPLAY']
+    return os.path.join(os.environ['XDG_RUNTIME_DIR'], 'ui', f'{name}-{display}.id')
 
 
 if __name__ == '__main__':
