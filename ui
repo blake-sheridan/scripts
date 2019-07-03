@@ -77,8 +77,7 @@ class Display:
         assert x_lower < x_upper
         assert y_lower < y_upper
 
-        # TODO: this should take into account `self._display`
-        output = subprocess.check_output(['xprop', '-root', '_NET_WORKAREA'])
+        output = subprocess.check_output(['xprop', '-display', self._display, '-root', '_NET_WORKAREA'])
 
         # Example output:
         # _NET_WORKAREA(CARDINAL) = 70, 27, 3770, 1573, 70, 27, 3770, 1573
