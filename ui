@@ -93,7 +93,9 @@ class Display:
         width = int((x_upper - x_lower) * total_width)
         height = int((y_upper - y_lower) * total_height)
 
-        subprocess.run(['wmctrl', '-r', ':ACTIVE:', '-e', f'0,{x},{y},{width},{height}'])
+        subprocess.run(['xdotool', 'getactivewindow',
+                        'windowmove', str(x), str(y),
+                        'windowsize', str(width), str(height)])
 
     # Helpers
 
