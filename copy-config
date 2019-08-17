@@ -1,17 +1,13 @@
 #!/bin/sh
 
 hostname="$1"
+config=$HOME/config
 
 ssh $hostname "mkdir -p .config"
 
-scp -r $HOME/.config/ack   $hostname:.config/
-scp -r $HOME/.config/emacs $hostname:.config/
-scp -r $HOME/.config/git   $hostname:.config/
+scp -r $config/ack   $hostname:.config/
+scp -r $config/emacs $hostname:.config/
+scp -r $config/git   $hostname:.config/
 
-scp $HOME/.emacs    $hostname:
-scp $HOME/.profile  $hostname:
-scp $HOME/.zprofile $hostname:
-scp $HOME/.zshenv   $hostname:
-scp $HOME/.zshrc    $hostname:
-
-
+scp $config/zsh/env  $hostname:.zshenv
+scp $config/zsh/rc   $hostname:.zshrc
