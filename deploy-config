@@ -1,0 +1,13 @@
+#!/bin/sh
+
+config=$HOME/config
+
+# emacs
+ln -fs $config/emacs ~/.emacs.d
+
+# git
+ln -fs $config/git ~/.config/git
+
+# zsh
+ln -fs $config/zsh/env ~/.zshenv
+ln -fs $config/zsh/rc ~/.zshrc
